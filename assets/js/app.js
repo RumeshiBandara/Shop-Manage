@@ -19,7 +19,7 @@ async function fetchProducts() {
         const response = await fetch(`${API_URL}?limit=10`);
         if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
-        
+
         state.products = data.products;
         renderProducts();
     } catch (error) {
@@ -36,7 +36,7 @@ function renderProducts() {
     state.products.forEach(product => {
         const card = document.createElement('div');
         card.className = 'bg-white rounded-2xl shadow-md p-4 flex flex-col hover:shadow-xl hover:-translate-y-1 transition-all duration-300 animate-fade-in';
-        
+
         card.innerHTML = `
             <div class="relative aspect-square mb-4 bg-gray-50 rounded-xl overflow-hidden">
                 <img src="${product.thumbnail}" alt="${product.title}" class="w-full h-full object-contain p-4">
@@ -61,7 +61,7 @@ function renderProducts() {
 }
 productForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    
+
     const id = document.getElementById('productId').value;
     const productData = {
         title: document.getElementById('pTitle').value,
@@ -79,7 +79,7 @@ productForm.addEventListener('submit', async (e) => {
                 body: JSON.stringify(productData)
             });
             const updated = await res.json();
-            
+
             // Local update for instant UI feedback
             state.products = state.products.map(p => p.id == id ? { ...p, ...productData } : p);
             alert('Product Updated Successfully');
@@ -91,12 +91,12 @@ productForm.addEventListener('submit', async (e) => {
                 body: JSON.stringify(productData)
             });
             const newProd = await res.json();
-            
+
             // Mock adding to local state (since API won't persist)
             state.products = [newProd, ...state.products];
             alert('Product Added Successfully');
         }
-        
+
         renderProducts();
         closeModal();
     } catch (error) {
@@ -105,7 +105,7 @@ productForm.addEventListener('submit', async (e) => {
 });
 productForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    
+
     const id = document.getElementById('productId').value;
     const productData = {
         title: document.getElementById('pTitle').value,
@@ -123,7 +123,7 @@ productForm.addEventListener('submit', async (e) => {
                 body: JSON.stringify(productData)
             });
             const updated = await res.json();
-            
+
             // Local update for instant UI feedback
             state.products = state.products.map(p => p.id == id ? { ...p, ...productData } : p);
             alert('Product Updated Successfully');
@@ -135,12 +135,12 @@ productForm.addEventListener('submit', async (e) => {
                 body: JSON.stringify(productData)
             });
             const newProd = await res.json();
-            
+
             // Mock adding to local state (since API won't persist)
             state.products = [newProd, ...state.products];
             alert('Product Added Successfully');
         }
-        
+
         renderProducts();
         closeModal();
     } catch (error) {
@@ -152,7 +152,7 @@ async function handleDelete(id) {
 
     try {
         await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
-        
+
         // Instant UI Removal
         state.products = state.products.filter(p => p.id !== id);
         renderProducts();
@@ -184,6 +184,14 @@ function openModal() {
     setTimeout(() => {
         modalContainer.classList.remove('scale-95', 'opacity-0');
     }, 10);
+}
+function closeModal() {
+    modalContainer.classList.add('scale-95', 'opacity-0');
+    setTimeout(() => {
+        productModal.classList.add('hidden');
+        state.isEditing = false;
+        productForm.reset();
+    }, 300);
 }
 
 
