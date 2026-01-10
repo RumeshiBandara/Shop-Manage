@@ -103,5 +103,50 @@ productForm.addEventListener('submit', async (e) => {
         alert('Error saving product.');
     }
 });
+productForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const id = document.getElementById('productId').value;
+    const productData = {
+        title: document.getElementById('pTitle').value,
+        price: parseFloat(document.getElementById('pPrice').value),
+        category: document.getElementById('pCategory').value,
+        thumbnail: document.getElementById('pImage').value || 'https://via.placeholder.com/150'
+    };
+
+    try {
+        if (state.isEditing) {
+            // Update Logic
+            const res = await fetch(`${API_URL}/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(productData)
+            });
+            const updated = await res.json();
+            
+            // Local update for instant UI feedback
+            state.products = state.products.map(p => p.id == id ? { ...p, ...productData } : p);
+            alert('Product Updated Successfully');
+        } else {
+            // Add Logic
+            const res = await fetch(`${API_URL}/add`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(productData)
+            });
+            const newProd = await res.json();
+            
+            // Mock adding to local state (since API won't persist)
+            state.products = [newProd, ...state.products];
+            alert('Product Added Successfully');
+        }
+        
+        renderProducts();
+        closeModal();
+    } catch (error) {
+        alert('Error saving product.');
+    }
+});
+
 
 
