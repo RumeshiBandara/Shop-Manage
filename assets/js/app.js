@@ -31,5 +31,33 @@ async function fetchProducts() {
     }
 }
 
+function renderProducts() {
+    productGrid.innerHTML = '';
+    state.products.forEach(product => {
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-2xl shadow-md p-4 flex flex-col hover:shadow-xl hover:-translate-y-1 transition-all duration-300 animate-fade-in';
+        
+        card.innerHTML = `
+            <div class="relative aspect-square mb-4 bg-gray-50 rounded-xl overflow-hidden">
+                <img src="${product.thumbnail}" alt="${product.title}" class="w-full h-full object-contain p-4">
+                <span class="absolute top-2 right-2 bg-indigo-100 text-indigo-700 text-[10px] font-bold px-2 py-1 rounded-full uppercase">
+                    ${product.category}
+                </span>
+            </div>
+            <h3 class="font-bold text-gray-800 line-clamp-1">${product.title}</h3>
+            <p class="text-teal-600 font-bold text-lg mt-1">$${product.price}</p>
+            
+            <div class="mt-auto pt-4 flex gap-2">
+                <button onclick="handleEdit(${product.id})" class="flex-1 bg-gray-50 hover:bg-blue-50 text-blue-600 font-semibold py-2 rounded-lg transition-colors border border-blue-100">
+                    <i class="fas fa-edit mr-1"></i> Edit
+                </button>
+                <button onclick="handleDelete(${product.id})" class="flex-1 bg-gray-50 hover:bg-red-50 text-red-600 font-semibold py-2 rounded-lg transition-colors border border-red-100">
+                    <i class="fas fa-trash mr-1"></i> Delete
+                </button>
+            </div>
+        `;
+        productGrid.appendChild(card);
+    });
+}
 
 
