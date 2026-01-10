@@ -174,6 +174,17 @@ function handleEdit(id) {
 
     openModal();
 }
+function openModal() {
+    if (!state.isEditing) {
+        state.isEditing = false;
+        document.getElementById('modalTitle').innerText = 'Add New Product';
+        productForm.reset();
+    }
+    productModal.classList.remove('hidden');
+    setTimeout(() => {
+        modalContainer.classList.remove('scale-95', 'opacity-0');
+    }, 10);
+}
 
 
 
