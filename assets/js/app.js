@@ -160,6 +160,20 @@ async function handleDelete(id) {
         alert('Failed to delete product.');
     }
 }
+function handleEdit(id) {
+    const product = state.products.find(p => p.id === id);
+    if (!product) return;
+
+    state.isEditing = true;
+    document.getElementById('modalTitle').innerText = 'Edit Product';
+    document.getElementById('productId').value = product.id;
+    document.getElementById('pTitle').value = product.title;
+    document.getElementById('pPrice').value = product.price;
+    document.getElementById('pCategory').value = product.category;
+    document.getElementById('pImage').value = product.thumbnail;
+
+    openModal();
+}
 
 
 
