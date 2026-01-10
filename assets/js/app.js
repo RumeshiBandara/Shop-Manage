@@ -14,4 +14,22 @@ const productForm = document.getElementById('productForm');
 
 document.addEventListener('DOMContentLoaded', fetchProducts);
 
+async function fetchProducts() {
+    try {
+        const response = await fetch(`${API_URL}?limit=10`);
+        if (!response.ok) throw new Error('Network response was not ok');
+        const data = await response.json();
+        
+        state.products = data.products;
+        renderProducts();
+    } catch (error) {
+        console.error('Fetch Error:', error);
+        alert('Failed to load products. Please check your connection.');
+    } finally {
+        loader.classList.add('hidden');
+        productGrid.classList.remove('opacity-0');
+    }
+}
+
+
 
