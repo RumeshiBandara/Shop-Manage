@@ -147,6 +147,19 @@ productForm.addEventListener('submit', async (e) => {
         alert('Error saving product.');
     }
 });
+async function handleDelete(id) {
+    if (!confirm('Are you sure you want to delete this product?')) return;
+
+    try {
+        await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+        
+        // Instant UI Removal
+        state.products = state.products.filter(p => p.id !== id);
+        renderProducts();
+    } catch (error) {
+        alert('Failed to delete product.');
+    }
+}
 
 
 
