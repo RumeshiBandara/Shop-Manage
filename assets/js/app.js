@@ -11,3 +11,7 @@ const loader = document.getElementById('loader');
 const productModal = document.getElementById('productModal');
 const modalContainer = document.getElementById('modalContainer');
 const productForm = document.getElementById('productForm');
+
+document.addEventListener('DOMContentLoaded', fetchProducts);
+
+
